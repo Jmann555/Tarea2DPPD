@@ -2,45 +2,60 @@ import io
 import torch
 from fastapi import FastAPI, UploadFile, File
 from PIL import Image
-import pandas as pd
+from ultralytics import YOLO 
 from torchvision import transforms
 
 app = FastAPI(title="Detector Perros Salchichas API 🐕")
 
-# Loading your custom YOLO model
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='model/exp3_lr0.001_wd1e-05_optAdamW_best.pt', force_reload=True)
+# 2. LOAD MODEL DIRECTLY WITH ULTRALYTICS
+# This is more robust than torch.hub
+model = YOLO('model/exp3_lr0.001_wd1e-05_optAdamW_best.pt')
 
-#PreProcessing for implementing the model
+# Preprocessing - This part might not even be necessary, as YOLO can often handle raw images.
+# You can try commenting this section out later if you want.
 transform = transforms.Compose([
     transforms.Resize((480, 480)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406],
                          std=[0.229, 0.224, 0.225])
 ])
-# Set the model to evaluation mode
-model.eval()
+# model.eval() is not needed for YOLO object
+
+@app.get("/")
+def read_root():
+    return {"status": "ok", "message": "API de Detección de Salchichas está en línea!"}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    """
-    Receives an image, applies preprocessing, runs YOLOv5 inference,
-    and returns detected objects.
-    """
-    # Read image from the upload
     contents = await file.read()
     img = Image.open(io.BytesIO(contents)).convert("RGB")
 
-    # Apply preprocessing to the image
-    img_tensor = transform(img)
+    # Run inference
+    results = model(img) # The model can directly take a PIL image
 
-    # Add a batch dimension (from [C, H, W] to [B, C, H, W])
-    # The model expects a batch of images, so we create a batch of 1
-    img_batch = img_tensor.unsqueeze(0)
+    # 3. PROCESS RESULTS FOR YOLOv8
+    # The '.pandas()' method does not exist here. We build the JSON manually.
+    predictions = []
+    for result in results:
+        boxes = result.boxes
+        for box in boxes:
+            # Get coordinates, confidence, and class
+            xyxy = box.xyxy[0].tolist()
+            conf = box.conf[0].item()
+            cls = int(box.cls[0].item())
+            class_name = model.names[cls]
 
-    # Run inference on the preprocessed image tensor
-    results = model(img_batch)
+            predictions.append({
+                "xmin": xyxy[0],
+                "ymin": xyxy[1],
+                "xmax": xyxy[2],
+                "ymax": xyxy[3],
+                "confidence": conf,
+                "class": cls,
+                "name": class_name
+            })
+            
+    # Filter for dachshunds (optional if it's the only class)
+    dachshund_predictions = [p for p in predictions if p['name'] == 'dachshund']
 
-    # Process results and convert to JSON 
-    predictions_df = results.pandas().xyxy[0]
-    dachshund_predictions = predictions_df[predictions_df['name'] == 'dachshund']
-    return dachshund_predictions.to_dict(orient="records")
+    return dachshund_predictions
