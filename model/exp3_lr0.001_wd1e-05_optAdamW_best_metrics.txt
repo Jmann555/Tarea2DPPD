@@ -1,0 +1,9 @@
+Modelo: exp3_lr0.001_wd1e-05_optAdamW_best.pt
+Experimento: exp3_lr0.001_wd1e-05_optAdamW
+Hiperparámetros: lr0=0.001, wd=1e-05, opt=AdamW
+  Matriz Conf (Val):
+[[         13           2]
+ [          0          58]]
+  Ruta Modelo .pt: modelos_finales_yolo_DirectPath\exp3_lr0.001_wd1e-05_optAdamW_best.pt
+  Ruta Img Matriz Conf (Val): DachshundRunsYOLO_DirectPath\exp3_lr0.001_wd1e-05_optAdamW_final_val3\confusion_matrix.png
+  Ruta CSV Entrenamiento: DachshundRunsYOLO_DirectPath\exp3_lr0.001_wd1e-05_optAdamW\results.csv
