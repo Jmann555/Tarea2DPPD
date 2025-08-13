@@ -30,34 +30,21 @@ async def predict(file: UploadFile = File(...)):
     contents = await file.read()
     img = Image.open(io.BytesIO(contents)).convert("RGB")
 
-    # --- FIX IS HERE: APPLY THE TRANSFORM ---
-    # The image is converted to a tensor and normalized, just like in training.
-    # .unsqueeze(0) adds the batch dimension the model expects.
-    img_tensor = transform(img).unsqueeze(0)
+    # Let the YOLO model handle all internal preprocessing
+    results = model(img) 
 
-    # Run inference on the preprocessed tensor
-    results = model(img_tensor)
-
-    # The rest of the result processing code remains the same...
+    # --- PROCESS RESULTS AS A CLASSIFIER ---
+    # Get the probabilities from the first result object
+    probs = results[0].probs 
+    
+    # Get the top 5 predicted classes and their confidences
+    top5_indices = probs.top5
+    top5_confidences = probs.top5conf.tolist()
+    
     predictions = []
-    for result in results:
-        boxes = result.boxes
-        for box in boxes:
-            xyxy = box.xyxy[0].tolist()
-            conf = box.conf[0].item()
-            cls = int(box.cls[0].item())
-            class_name = model.names[cls]
+    for i, index in enumerate(top5_indices):
+        class_name = model.names[index]
+        confidence = top5_confidences[i]
+        predictions.append({"class": class_name, "confidence": confidence})
 
-            predictions.append({
-                "xmin": xyxy[0],
-                "ymin": xyxy[1],
-                "xmax": xyxy[2],
-                "ymax": xyxy[3],
-                "confidence": conf,
-                "class": cls,
-                "name": class_name
-            })
-
-    dachshund_predictions = [p for p in predictions if p['name'] == 'dachshund']
-
-    return dachshund_predictions
+    return predictions
