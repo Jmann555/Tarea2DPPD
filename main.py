@@ -30,16 +30,19 @@ async def predict(file: UploadFile = File(...)):
     contents = await file.read()
     img = Image.open(io.BytesIO(contents)).convert("RGB")
 
-    # Run inference
-    results = model(img) # The model can directly take a PIL image
+    # --- FIX IS HERE: APPLY THE TRANSFORM ---
+    # The image is converted to a tensor and normalized, just like in training.
+    # .unsqueeze(0) adds the batch dimension the model expects.
+    img_tensor = transform(img).unsqueeze(0)
 
-    # 3. PROCESS RESULTS FOR YOLOv8
-    # The '.pandas()' method does not exist here. We build the JSON manually.
+    # Run inference on the preprocessed tensor
+    results = model(img_tensor)
+
+    # The rest of the result processing code remains the same...
     predictions = []
     for result in results:
         boxes = result.boxes
         for box in boxes:
-            # Get coordinates, confidence, and class
             xyxy = box.xyxy[0].tolist()
             conf = box.conf[0].item()
             cls = int(box.cls[0].item())
@@ -54,8 +57,7 @@ async def predict(file: UploadFile = File(...)):
                 "class": cls,
                 "name": class_name
             })
-            
-    # Filter for dachshunds (optional if it's the only class)
+
     dachshund_predictions = [p for p in predictions if p['name'] == 'dachshund']
 
     return dachshund_predictions
