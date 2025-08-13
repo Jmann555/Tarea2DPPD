@@ -6,3 +6,4 @@ pandas
 Pillow
 ultralytics
 seaborn
+python-multipart
