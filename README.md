@@ -45,10 +45,41 @@ pip intstall -r ./requirements.txt
 ```
 Este comando puede demorar un rato dependiendo de la velocidad del computador y la de la conexión a Internet.
 
+### 3. Implementación desde Github
+Puedes usar este repositorios directamente o puedes generar una copia de la siguiente forma: 
+1. ingresa a este Github ( si por casualidad obtuviste este codigo por otro lado) [Gvagg555/Tarea2DPPD](https://github.com/Jmann555/Tarea2DPPD) 
 
+2. Presiona el boton verde que dice `<> Code` arriba de las carpetas de archivo como en la imagen a continuación:
+![Boton Descarga](./assets/downloadbutton.jpg)
 
+3. Copia la URL del repositorio , o tambien puedes abrirlo mediante GitHub Desktop.
+```
+https://github.com/Jmann555/Tarea2DPPD.git
+```
 
-1. You may use this repository directly or [create your own repository from this template](https://github.com/render-examples/fastapi/generate) if you'd like to customize the code.
+4. Abre TerminalTerminalGit Bash.
+
+5. Cambial al directorio o locación que quieras dejar tu directorio clonado.
+
+6. Escribe `git clone` y luego pega la URL que copiastes anteriormente.
+```
+git clone https://github.com/Jmann555/Tarea2DPPD.git
+```
+ y listo 😉
+
+### 4. Generación de la Api mediante Render
+
+Esta api ya se encuentra creada y puedes usarla libremente!, solo te pido que antes de utilizar sus beneficios ingresa a la siguiente [URL de Render](https://sera-perrosalchicha-o-no.onrender.com) para poder activar la API antes de su uso ( ya que está realizado con el plan free 😄 )
+
+```
+https://sera-perrosalchicha-o-no.onrender.com
+```
+
+De no ser asi, y tu plan es utilizar este codigo para aprendizaje, favor sigue los siguientes pasos para poder implementarlo tu solo:
+
+- Ingresa a [Render](https://dashboard.render.com/)
+- Inicia sesión o crea tu cuenta.
+- Agrega tu cuenta de Github en donde tienes copiado el 
 2. Create a new Web Service on Render.
 3. Specify the URL to your new repository or this repository.
 4. Render will automatically detect that you are deploying a Python service and use `pip` to download the dependencies.
