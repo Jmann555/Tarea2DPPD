@@ -26,25 +26,32 @@ def read_root():
     return {"status": "ok", "message": "API de Detección de Salchichas está en línea!"}
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+async def predict(file: UploadFile = File(...), confidence: float = 0.85):
     contents = await file.read()
     img = Image.open(io.BytesIO(contents)).convert("RGB")
 
-    # Let the YOLO model handle all internal preprocessing
+    # Realizar la inferencia
     results = model(img) 
 
-    # --- PROCESS RESULTS AS A CLASSIFIER ---
-    # Get the probabilities from the first result object
+    # Procesar los resultados para obtener las probabilidades
     probs = results[0].probs 
     
-    # Get the top 5 predicted classes and their confidences
-    top5_indices = probs.top5
-    top5_confidences = probs.top5conf.tolist()
+    # Crear un diccionario para acceder fácilmente a las confianzas por nombre de clase
+    confidences = {model.names[i]: p for i, p in enumerate(probs.data)}
     
-    predictions = []
-    for i, index in enumerate(top5_indices):
-        class_name = model.names[index]
-        confidence = top5_confidences[i]
-        predictions.append({"class": class_name, "confidence": confidence})
+    # Obtener la confianza específica para la clase 'dachshund'
+    dachshund_confidence = confidences.get('dachshund', 0)
 
-    return predictions
+    # Comparamos la confianza con el umbral que recibimos
+    if dachshund_confidence >= confidence:
+        prediction_value = 1
+        prediction_text = "Es un perro salchicha!"
+    else:
+        prediction_value = 0
+        prediction_text = "No es un perro salchicha!"
+    
+    return {
+        "prediction_text": prediction_text,
+        "prediction_value": prediction_value,
+        "confidence_score": dachshund_confidence
+    }

@@ -4,7 +4,7 @@ Alumno: Julio Felipe Assmann Segura
 
 ## Descripción del proyecto
 
-Este proyecto consiste en la implementación de un modelo de Machine Learning como API, se utilizara un YOLO generado en Visualización Computacional sobre la identificación de perros Salchichas!🐕
+Este proyecto consiste en la implementación de un modelo de Machine Learning como API, se utilizara un YOLO generado en Visualización Computacional sobre una clasificación de perros Salchichas!🐕
 
 Para ello realizaremos 3 labores 
 - 1. Implementación de la API en FastAPI
@@ -19,7 +19,8 @@ TAREA2DPPD/ (este directorio)
 ├── model/ (el modelo a utilizar)
 │   └── exp3_lr0.001_wd1e-05_optAdamW_best.pt 
 ├── main.py   (Backend FastAPI con modelo de predicción serverless.)
-└── requirements.txt (dependencias necesarias para utlizar el modelo)
+├── requirements.txt (dependencias necesarias para utlizar el modelo)
+└── test.ipynb   (notebook de ejmplo que utiliza la Url de render para probar la detección)
 ```
 ## Pasos previos usando Conda:
 #### Prerequisito : tener [CONDA](https://docs.conda.io/en/latest/) instalado en tu computador:
@@ -28,7 +29,7 @@ Vamos a usar Conda para construir un entorno virtual nuevo..
 #### 1. Creando el entorno virtual (Virtual Environment)
 Asumiremos que tenemos instalado conda. El primer paso es crear un nuevo enviroment para desarrollar. Para crear uno usando Python 3.12 debemos ejecutar el siguiente comando:
 ```
-conda create --name producto-datos-lab python=3.8
+conda create --name producto-datos-lab python=3.12
 ```
 Luego debemos activarlo usando el comando:
 ```
@@ -36,6 +37,13 @@ conda activate TAREA2DPPD
 ```
 Todo el trabajo que realicemos con este código será en este entorno. Así que al trabajar con estos archivos siempre tienen que estar activas estas dependencias.
 
+#### 2. Instalando las dependencias usando PIP
+Antes de seguir, verifica que en el terminal de Anaconda estés dentro del directorio `TAREA2DPPD` el cual incluye el archivo `./requirements.txt`. Este archivo enlista todas las dependencias necesarias y podemos usarlo para instalarlas todas:
+
+```
+pip intstall -r ./requirements.txt
+```
+Este comando puede demorar un rato dependiendo de la velocidad del computador y la de la conexión a Internet.
 
 
 

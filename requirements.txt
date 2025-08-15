@@ -7,3 +7,5 @@ Pillow
 ultralytics
 seaborn
 python-multipart
+jupyter_client
+jupyter_core
