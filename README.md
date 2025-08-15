@@ -13,16 +13,31 @@ Para ello realizaremos 3 labores
 
 ## Comenzando
 
-
-
-
+Es importante recordar que deben haber bajado todos los archivos a una carpeta y en la terminal de Anacondallegar a este Direciorio
 ```
-TAREA2DPPD/
-├── model/
-│   └── exp3_lr0.001_wd1e-05_optAdamW_best.pt
-├── main.py
-└── requirements.txt
+TAREA2DPPD/ (este directorio)
+├── model/ (el modelo a utilizar)
+│   └── exp3_lr0.001_wd1e-05_optAdamW_best.pt 
+├── main.py   (Backend FastAPI con modelo de predicción serverless.)
+└── requirements.txt (dependencias necesarias para utlizar el modelo)
 ```
+## Pasos previos usando Conda:
+#### Prerequisito : tener [CONDA](https://docs.conda.io/en/latest/) instalado en tu computador:
+Vamos a usar Conda para construir un entorno virtual nuevo..
+
+#### 1. Creando el entorno virtual (Virtual Environment)
+Asumiremos que tenemos instalado conda. El primer paso es crear un nuevo enviroment para desarrollar. Para crear uno usando Python 3.12 debemos ejecutar el siguiente comando:
+```
+conda create --name producto-datos-lab python=3.8
+```
+Luego debemos activarlo usando el comando:
+```
+conda activate TAREA2DPPD
+```
+Todo el trabajo que realicemos con este código será en este entorno. Así que al trabajar con estos archivos siempre tienen que estar activas estas dependencias.
+
+
+
 
 
 1. You may use this repository directly or [create your own repository from this template](https://github.com/render-examples/fastapi/generate) if you'd like to customize the code.
