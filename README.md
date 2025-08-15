@@ -146,7 +146,7 @@ except requests.exceptions.RequestException as e:
 y Listo!, espero que disfrutes el modelo y te sirva para poder diferenciar los perros salchichas. 
 
 `NOTA 2: El modelo fue entrenado con 200 imagenes, sus niveles de confianza son : `
-```
+
 | Métrica                 | Clase           | YOLOv8-cls  | Comentarios |
 | :---------------------- | :-------------- | :---------------------- | :--------------------------------- |
 | **Precisión** | `dachshund`     |        0.97          |                                    |
@@ -166,4 +166,3 @@ y Listo!, espero que disfrutes el modelo y te sirva para poder diferenciar los p
 |                         | `dachshund` FN  |        1          | Falsos Negativos                   |
 |                         | `dachshund` FP  |        1         | Falsos Positivos                   |
 |                         | `dachshund` TN  |        18         | Verdaderos Negativos               |
-```
